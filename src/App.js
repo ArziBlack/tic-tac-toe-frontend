@@ -4,7 +4,7 @@ import Game from './pages/Game';
 function App() {
   return (
     <div className="App">
-      milton Black Tic Tac Toe Game (... Building Sequence In Progress). <br/>
+      Milton's Black Tic Tac Toe onChain Game (... Building Sequence In Progress). <br/>
       Building stage
       <Game/>
     </div>

@@ -18,7 +18,30 @@ body{
 .board{
   width:500px;
   height:500px;
-  background-color: aqamarine;
+  background-color: pink;
   border: 1px solid black;
   display: flex;
+  flex-direction:column;
 }
+
+.row{
+  flex:1;
+  display:flex;
+  flex-direction:row;
+  border: 1px solid black;
+}
+
+.square {
+  flex:1;
+  height:100%;
+  border:1px solid black;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  color:black;
+  font-family:Arial;
+}
+ .square:active{
+  background-color: grey;
+ }
