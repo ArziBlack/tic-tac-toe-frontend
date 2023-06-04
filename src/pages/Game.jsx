@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideNav from '../components/SideNav'
 import Square from '../components/Square';
+import { Patterns } from '../utils/Patterns'
 
 const Game = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
     const [player, setPlayer] = useState("X");
+    const [result, setResult] = useState({winner: "none", state: "none"});
+
+    useEffect(()=> {
+        checkWin()
+    },[board])
     const chooseSquare = (square) => {
         setBoard(board.map((val, idx) => {
             if (idx === square) {
@@ -17,6 +23,20 @@ const Game = () => {
         } else {
             setPlayer("X");
         }
+    }
+    const checkWin = ()=> {
+        Patterns.forEach((currentPattern) => {
+            const firstPlayer = board[currentPattern[0]];
+            let foundWinningPattern = true;
+            currentPattern.forEach((idx) => {
+                if(board[idx] !== firstPlayer) {
+                    foundWinningPattern = false;
+                }
+            })
+            if (foundWinningPattern) {
+                setResult({winner: player, state: "won",})
+            }
+        })
     }
     return (
         <div className='game'>
