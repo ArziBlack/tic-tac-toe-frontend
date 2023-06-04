@@ -3,7 +3,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      milton Black Tic Tac Toe Game (...In Progress). <br/>
+      milton Black Tic Tac Toe Game (... Building Sequence In Progress). <br/>
       Building stage
     </div>
   );
