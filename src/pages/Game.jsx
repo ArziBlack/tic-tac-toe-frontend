@@ -10,7 +10,7 @@ const Game = () => {
 
     useEffect(()=> {
         checkWin();
-
+        checkDraw();
         if (player === "X") {
             setPlayer("O");
         } else {
@@ -19,7 +19,8 @@ const Game = () => {
     },[board]);
     useEffect(()=> {
         if (result.state !== "none") {
-            alert(`${result.winner} Wins. Game Ended. Restart Game.`)
+            alert(`${result.winner} Wins. Game Ended. Restart Game.`);
+            restartGame();
         }
     },[result])
     const chooseSquare = (square) => {
@@ -45,6 +46,24 @@ const Game = () => {
                 setResult({winner: player, state: "won",})
             }
         })
+    }
+
+    function checkDraw() {
+        let filled = true;
+        board.forEach((square)=> {
+            if (square === "") {
+                filled = false;
+            }
+        });
+
+        if (filled) {
+            setResult({winner: "No winner", state:"Draw"})
+        }
+    };
+     
+    const restartGame = () => {
+        setBoard(["", "", "", "", "", "", "", "", ""]);
+        setPlayer("X");
     }
     return (
         <div className='game'>
