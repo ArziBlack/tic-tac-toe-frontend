@@ -5,28 +5,36 @@ import { Patterns } from '../utils/Patterns'
 
 const Game = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
-    const [player, setPlayer] = useState("X");
+    const [player, setPlayer] = useState("O");
     const [result, setResult] = useState({winner: "none", state: "none"});
 
     useEffect(()=> {
-        checkWin()
-    },[board])
-    const chooseSquare = (square) => {
-        setBoard(board.map((val, idx) => {
-            if (idx === square) {
-                return player
-            }
-            return val;
-        }))
+        checkWin();
+
         if (player === "X") {
             setPlayer("O");
         } else {
             setPlayer("X");
+        };
+    },[board]);
+    useEffect(()=> {
+        if (result.state !== "none") {
+            alert(`${result.winner} Wins. Game Ended. Restart Game.`)
         }
+    },[result])
+    const chooseSquare = (square) => {
+        setBoard(board.map((val, idx) => {
+            if (idx === square && val === "") {
+                return player
+            }
+            return val;
+        }))
     }
     const checkWin = ()=> {
         Patterns.forEach((currentPattern) => {
             const firstPlayer = board[currentPattern[0]];
+            console.log(currentPattern);
+            if (firstPlayer === "") return;
             let foundWinningPattern = true;
             currentPattern.forEach((idx) => {
                 if(board[idx] !== firstPlayer) {
