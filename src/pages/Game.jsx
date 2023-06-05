@@ -63,7 +63,11 @@ const Game = () => {
      
     const restartGame = () => {
         setBoard(["", "", "", "", "", "", "", "", ""]);
-        setPlayer("X");
+        if (player === "X") {
+            setPlayer("O");
+        } else {
+            setPlayer("X");
+        };
     }
     return (
         <div className='game'>
