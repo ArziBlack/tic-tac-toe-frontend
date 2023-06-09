@@ -70,7 +70,7 @@ const Game = () => {
         };
     }
     return (
-        <div className='game'>
+        <div className='game'> Tic Tac Toe Game OnChain Building in Progress...
             <div className='board'>
                 <div className="row">
                     <Square val={board[0]} chooseSquare={() => { chooseSquare(0) }} />

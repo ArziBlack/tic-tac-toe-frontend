@@ -17,6 +17,7 @@ body{
   width:100%;
   height:100%;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items: center;
   position:relative;
@@ -90,5 +91,5 @@ body{
  }
  .open{
   padding:20px;
-  
+  cursor:pointer;
  }
