@@ -6,13 +6,20 @@ body{
 .App {
   text-align: center;
   width:100vw;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
 }
 
 .game{
   width:100%;
+  height:100%;
   display:flex;
   justify-content:center;
   align-items: center;
+  position:relative;
 }
 
 .board{
@@ -45,4 +52,43 @@ body{
 }
  .square:active{
   background-color: grey;
+ }
+
+ .sidenav{
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+ }
+ .menu{
+  position:relative;
+  width:30vw;
+  height:100vh;
+  background:rgba(0,0,0,0.8);
+  color:white;
+  font-size:20px;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-around;
+ }
+ .close {
+  position:absolute;
+  left:10px;
+  top:10px;
+  width:40px;
+  height:40px;
+  padding:10px;
+  border:1px solid black;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  cursor:pointer;
+ }
+ .open{
+  padding:20px;
+  
  }
