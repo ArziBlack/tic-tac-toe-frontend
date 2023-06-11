@@ -1,0 +1,50 @@
+.bg {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bg .signup {
+  max-width: 600px;
+  min-width: 450px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bg .signup .signup-logo {
+  font-weight: 900;
+}
+.bg .signup .signup-form {
+  display: flex;
+  flex-direction: column;
+  background: black;
+  color: white;
+  width: 100%;
+  padding: 20px;
+  border-radius: 5px;
+}
+.bg .signup .signup-form .input-signup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.bg .signup .signup-form .input-signup p {
+  font-size: 15px;
+  font-weight: bold;
+}
+.bg .signup .signup-form .input-signup input {
+  padding: 4px;
+  border-radius: 5px;
+  width: 100%;
+}
+.bg .signup .signup-form .signup-btn {
+  background: grey;
+  width: 100%;
+  padding: 5px;
+  border-radius: 2px;
+  margin-top: 20px;
+}/*# sourceMappingURL=SignUp.css.map */

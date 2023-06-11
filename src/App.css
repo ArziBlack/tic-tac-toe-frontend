@@ -10,7 +10,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-
+  background:blue;
 }
 
 .game{
@@ -30,8 +30,10 @@ body{
   border: 1px solid black;
   display: flex;
   flex-direction:column;
+  padding-top:10px;
+  padding-bottom:5px;
+  border-radius:10px;
 }
-
 
 .row{
   flex:1;
@@ -73,6 +75,7 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:space-around;
+  transition:.3s linear;
  }
  .close {
   position:absolute;
@@ -92,4 +95,24 @@ body{
  .open{
   padding:20px;
   cursor:pointer;
+ }
+ .menu:hover{
+  transition:.4s ease;
+ }
+ .open:hover {
+  background:white;
+  translate:scale(0.5);
+  transition:0.2s ease-in;
+ }
+ .active {
+  color:blue;
+ }
+
+ @media (max-width:800px) {
+  .sidenav{
+    left:0;
+  }
+  .menu{
+    width:100vw;
+  }
  }
