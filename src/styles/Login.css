@@ -8,7 +8,7 @@
 .login-bg .login-container {
   display: flex;
   width: 700px;
-  height: 300px;
+  height: 350px;
   border: 1px solid black;
   border-radius: 4px;
 }
@@ -58,6 +58,7 @@
   padding: 10px;
   width: 100%;
   height: 100%;
+  padding-top: 30px;
 }
 .login-bg .login-container .login-wrapper .login-form .login-input {
   padding: 10px;
@@ -72,5 +73,10 @@
 .login-bg .login-container .login-wrapper .login-form .login-input input {
   padding: 5px;
   border-radius: 5px;
+  width: 100%;
+  color: black;
+}
+.login-bg .login-container .login-wrapper .login-form em {
+  text-align: center;
   width: 100%;
 }/*# sourceMappingURL=Login.css.map */

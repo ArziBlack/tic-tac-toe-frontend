@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa'
 
-const SideNav = () => {
-  const [open, setOpen] = useState(true);
-  function toggleMenu() {
-    setOpen(!open);
-  }
+const SideNav = ({open, toggleMenu}) => {
+  
   return (
     <div className='sidenav' >
       {!open &&
@@ -15,29 +12,29 @@ const SideNav = () => {
         </div>
       }
       {open &&
-        <div className='menu flex flex-col items-center justify-between h-full'>
-          <div onClick={toggleMenu} className='w-1 h-1 border rounded-full bg-white close'>
+        <div className={`menu ${!open ? 'none' : 'flex'}`}>
+          <div onClick={toggleMenu} className='close'>
             <FaTimes color="red" size="30px" />
           </div>
-          <div>
+          <div className='link'>
             <NavLink to='welcome'>Home</NavLink>
           </div>
-          <div>
+          <div className='link'>
             <NavLink to='/'>Play Demo</NavLink>
           </div>
-          <div>
+          <div className='link'>
             <NavLink to='signup'>Sign Up</NavLink>
           </div>
-          <div>
+          <div className='link'>
             <NavLink to='login'>Login</NavLink>
           </div>
-          <div>
+          <div className='link'>
             <div>Connect Wallet</div>
           </div>
-          <div>
+          <div className='link'>
             <NavLink to='settings'>Settings</NavLink>
           </div>
-          <div>
+          <div className='link'>
           <NavLink to='aboutus'>About Us</NavLink>
           </div>
         </div>

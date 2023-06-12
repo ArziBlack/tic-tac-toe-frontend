@@ -7,6 +7,10 @@ const Game = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
     const [player, setPlayer] = useState("O");
     const [result, setResult] = useState({winner: "none", state: "none"});
+    const [open, setOpen] = useState(true);
+    function toggleMenu() {
+      setOpen(!open);
+    }
 
     useEffect(()=> {
         checkWin();
@@ -71,7 +75,7 @@ const Game = () => {
     }
     return (
         <div className='game'> Tic Tac Toe Game OnChain Building in Progress...
-            <div className='board'>Round: 1, PlayerX:__ , PlayerO:___
+            {!open && <div className='board'>Round: 1, PlayerX:__ , PlayerO:___
                 <div className="row">
                     <Square val={board[0]} chooseSquare={() => { chooseSquare(0) }} />
                     <Square val={board[1]} chooseSquare={() => { chooseSquare(1) }} />
@@ -87,8 +91,8 @@ const Game = () => {
                     <Square val={board[7]} chooseSquare={() => { chooseSquare(7) }} />
                     <Square val={board[8]} chooseSquare={() => { chooseSquare(8) }} />
                 </div>
-            </div>
-            <SideNav />
+            </div>}
+            <SideNav open={open} toggleMenu={toggleMenu} />
         </div>
     )
 }
