@@ -1,0 +1,34 @@
+.nav {
+  width: 100%;
+  display: flex;
+  position: fixed;
+}
+.nav .navbar {
+  width: 100%;
+  display: flex;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 8px;
+  justify-content: space-between;
+}
+.nav .navbar .nav-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.nav .navbar .nav-right {
+  flex: 3;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+.nav .navbar .nav-right .nav-social {
+  display: flex;
+  width: 20%;
+  justify-content: space-between;
+  padding-right: 25px;
+}
+
+.scrolled {
+  background: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.5) 50%);
+}/*# sourceMappingURL=Navbar.css.map */

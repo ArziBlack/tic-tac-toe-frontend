@@ -4,6 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgb(0, 0, 0) 100%), url("/public/img/bg.jpg");
+  background-size: cover;
 }
 .login-bg .login-container {
   display: flex;
@@ -11,6 +13,7 @@
   height: 350px;
   border: 1px solid black;
   border-radius: 4px;
+  box-shadow: 2px 4px 6px white;
 }
 .login-bg .login-container .login-image {
   flex: 1;

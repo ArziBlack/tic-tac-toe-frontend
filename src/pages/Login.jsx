@@ -5,7 +5,7 @@ import '../styles/Login.css'
 
 const Login = () => {
   return (
-    <div className='login-bg' styles={{backgroundImage:"url(img/bg.jpg)"}}>
+    <div className='login-bg'>
       <div className="login-container">
         <div className="login-image">
           <p>Login To Your Gamer Account</p>
