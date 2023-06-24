@@ -1,0 +1,32 @@
+.features {
+  width: 100%;
+  color: white;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+.features .features-wrapper {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.fcard {
+  background-color: #013;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  max-width: 200px;
+  height: 270px;
+}
+.fcard p {
+  font-size: 20px;
+  font-weight: 900;
+}/*# sourceMappingURL=Features.css.map */

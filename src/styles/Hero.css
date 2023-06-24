@@ -21,9 +21,20 @@
   align-items: start;
 }
 .hero .img .hero-body p {
-  font-size: 30px;
+  font-size: 38px;
   font-weight: 900;
   color: white;
+  text-align: left;
+}
+.hero .img .hero-body .button {
+  border: 1px solid white;
+  padding: 15px;
+  background-color: white;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  margin-top: 30px;
+  width: 40%;
 }
 .hero .img .hero-body .hero-cta {
   display: flex;

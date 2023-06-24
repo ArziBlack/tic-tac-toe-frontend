@@ -14,6 +14,7 @@ const NavBar = () => {
         <div className={scrolled ? "navbar scrolled" : "navbar"}>
             <div className="nav-left">
                 <FaDice size='30px' color='white'/>
+                <p>BlackDice</p>
             </div>
             <div className="nav-right">
                 <div className="nav-social">

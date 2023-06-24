@@ -18,6 +18,7 @@ const Hero = () => {
               Play Demo
             </button>
           </div>
+          <button className='button'>Get Started</button>
         </div>
       </div>
     </div>
