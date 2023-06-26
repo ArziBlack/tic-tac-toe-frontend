@@ -16,9 +16,9 @@ function App() {
         <Route path='signup' element={<SignUp />} />
         <Route path='aboutus' element={<AboutUs />} />
         <Route path='settings' element={<Settings />} />
-        <Route path='welcome' element={<Home />} />
-        <Route index
-          // path='demo'
+        <Route index  element={<Home />} />
+        <Route
+          path='demo'
           element={<Game />} />
       </Routes>
       {/* <Game/> */}

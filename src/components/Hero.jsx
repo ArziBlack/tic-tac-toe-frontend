@@ -2,6 +2,7 @@ import React from 'react'
 import {FaGooglePlay} from 'react-icons/fa'
 // import t3 from '../assets/images/t3.jpg'
 import '../styles/Hero.css'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   return (
@@ -15,7 +16,9 @@ const Hero = () => {
               Download from PlayStore
             </button>
             <button>
+              <Link to='demo'>
               Play Demo
+              </Link>
             </button>
           </div>
           <button className='button'>Get Started</button>
