@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Modes from './Modes'
 import '../styles/GameModes.css'
-import modeimg from '../assets/images/map.jpg'
+import road from '../assets/images/road.jpg'
+import bridge from '../assets/images/bridge.jpg'
+import cage from '../assets/images/cage.jpg'
+import island from '../assets/images/island.jpg'
+import tttb from '../assets/images/tttb.jpg'
 
 function GameModes() {
     const [page, setPage] = useState(1);
@@ -17,12 +21,12 @@ function GameModes() {
       }, [])
   return (
     <div className='gamemodes'>
-        {page === 1 && <Modes  text='Are you ready for the ultimate gaming test? Prepare to embark on an extraordinary journey filled with excitement, Strategy, and adrenaline-puming challenges.'/>}
-        {page === 2 &&<Modes text='Welcome to our game challenge Modes, where only the Bravest and most skilled gamers rise to the top! Ranging From the Different Challenge Modes'/>}
-        {page === 3 &&<Modes  text='Embark on epic quests, solve mind-bogling puzzles, defeat menacing foes, and unlock awe-inspiring achievements.
+        {page === 1 && <Modes  image={tttb} text='Are you ready for the ultimate gaming test? Prepare to embark on an extraordinary journey filled with excitement, Strategy, and adrenaline-puming challenges.'/>}
+        {page === 2 &&<Modes image={cage} text='Welcome to our game challenge Modes, where only the Bravest and most skilled gamers rise to the top! Ranging From the Different Challenge Modes'/>}
+        {page === 3 &&<Modes image={island}  text='Embark on epic quests, solve mind-bogling puzzles, defeat menacing foes, and unlock awe-inspiring achievements.
         Our Game challenge Modes is your gateway to a world where every vicory brings you closer to becoming a true gaming legend.'/>}
-        {page === 4 &&<Modes  text='Dive into the Action with our inituitive Interface and seamless gameplay. Whether you prefer 1st-person shooters, strategy games, Platformers, or RPGs, our Diverse Game Modes has Something for everyone. Discover new Challenges, Test your skills in different gaming styles, and find your true gaming passion.'/>}
-        {page === 5 &&<Modes text='Challenge your Friends, create Rivalries, and compete head-to-head in Multiplayer Tournament Battles. With Our Integrated Chat System, You can connect with fellow gamers, Discuss Strategies, and Celebrate your Victories Together.'/>}
+        {page === 4 &&<Modes image={bridge}  text='Dive into the Action with our inituitive Interface and seamless gameplay. Whether you prefer 1st-person shooters, strategy games, Platformers, or RPGs, our Diverse Game Modes has Something for everyone. Discover new Challenges, Test your skills in different gaming styles, and find your true gaming passion.'/>}
+        {page === 5 &&<Modes image={road} text='Challenge your Friends, create Rivalries, and compete head-to-head in Multiplayer Tournament Battles. With Our Integrated Chat System, You can connect with fellow gamers, Discuss Strategies, and Celebrate your Victories Together.'/>}
     </div>
   )
 }

@@ -17,10 +17,10 @@ const SideNav = ({open, toggleMenu}) => {
             <FaTimes color="red" size="30px" />
           </div>
           <div className='link'>
-            <NavLink to='welcome'>Home</NavLink>
+            <NavLink to='/'>Home</NavLink>
           </div>
           <div className='link'>
-            <NavLink to='/'>Play Demo</NavLink>
+            <NavLink to='demo'>Play Demo</NavLink>
           </div>
           <div className='link'>
             <NavLink to='signup'>Sign Up</NavLink>

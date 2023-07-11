@@ -9,18 +9,23 @@ import Roadmap from '../components/Roadmap'
 import Download from '../components/Download'
 import About from '../components/About'
 import Footer from '../components/Footer'
+import Heros from '../components/Heros'
+import GamePlay from '../components/GamePlay'
+import GameFeatures from '../components/GameFeatures'
 
 const Home = () => {
   return (
     <div className='home'>
-      <NavBar/>
-      <Hero/>
-      <Features/>
-      <GameModes/>
+      {/* <NavBar/> */}
+      <Heros/>
+      <About/>
+      <GamePlay/>
+      <GameFeatures/>
+      {/* <Features/> */}
+      {/* <GameModes/> */}
       <Walkthrough/>
       <Roadmap/>
       <Download/>
-      <About/>
       <Footer/>
     </div>
   )

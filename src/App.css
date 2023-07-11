@@ -115,6 +115,10 @@ body{
  .active {
   color:blue;
  }
+
+ .f1{
+  flex:1;
+ }
  /* .link{
   padding:15px;
   background-color:grey;
