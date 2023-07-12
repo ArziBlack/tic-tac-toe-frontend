@@ -1,8 +1,6 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
 import '../styles/Home.css'
-import Hero from '../components/Hero'
-import Features from '../components/Features'
 import GameModes from '../components/GameModes'
 import Walkthrough from '../components/Walkthrough'
 import Roadmap from '../components/Roadmap'
@@ -12,20 +10,18 @@ import Footer from '../components/Footer'
 import Heros from '../components/Heros'
 import GamePlay from '../components/GamePlay'
 import GameFeatures from '../components/GameFeatures'
+import Play from '../components/Play'
+import Features from '../components/Features'
 
 const Home = () => {
   return (
     <div className='home'>
-      {/* <NavBar/> */}
       <Heros/>
       <About/>
       <GamePlay/>
       <GameFeatures/>
-      {/* <Features/> */}
-      {/* <GameModes/> */}
-      <Walkthrough/>
-      <Roadmap/>
-      <Download/>
+      <Features/>
+      <Play/>
       <Footer/>
     </div>
   )
