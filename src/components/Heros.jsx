@@ -3,7 +3,7 @@ import { FaCubes, FaTimes } from 'react-icons/fa'
 import modeimg from '../assets/images/heros.jpg'
 
 const Heros = () => {
-    const [walktru, setWalktru] = useState(true);
+    const [walktru, setWalktru] = useState(false);
     function toggle() {
         setWalktru(!walktru);
     }
