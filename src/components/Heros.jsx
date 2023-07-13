@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FaCubes, FaTimes } from 'react-icons/fa'
 import modeimg from '../assets/images/heros.jpg'
 
@@ -20,7 +21,7 @@ const Heros = () => {
                             <section className='fixed left-0 right-60 bottom-10 top-0 w-screen h-screen bg-amber-700/75'>
                                 <div className=' bg-rose-700 border-4 shadow-2xl h-[88%] m-8 rounded-md relative'>
                                     <div className='absolute right-0 top-0 p-3 border-2 rounded-full m-3 hover:scale-110 bg-white cursor-pointer' onClick={toggle}>
-                                        <FaTimes color='red' size='25'/>
+                                        <FaTimes color='red' size='25' />
                                     </div>
                                     <div>
                                         <div className='text-white text-2xl text-left p-3'>
@@ -40,9 +41,10 @@ const Heros = () => {
                     <FaCubes fontSize={55} />
                     <h1 className='text-9xl font-extrabold drop-shadow-xl'>DICE TIC TAC TOE</h1>
                     <div className='flex p-4 font-medium'>
-                        <div className=' cursor-pointer px-4 py-2 bg-amber-500 rounded-md mx-2 hover:scale-110 font-bold' onClick={()=> setWalktru(true)}>How To Play</div>
+                        <div className=' cursor-pointer px-4 py-2 bg-amber-500 rounded-md mx-2 hover:scale-110 font-bold' onClick={() => setWalktru(true)}>How To Play</div>
                         <div className='cursor-pointer px-4 py-2 bg-amber-500 rounded-md font-bold mx-2 hover:scale-110'>Get NFT</div>
                         <div className='cursor-pointer px-4 py-2 bg-amber-500 rounded-md mx-2 hover:scale-110 font-bold'>Play</div>
+                        <Link to='demo' className='cursor-pointer px-4 py-2 bg-amber-500 rounded-md mx-2 hover:scale-110 font-bold'>Play Demo</Link>
                         <div className='cursor-pointer px-4 py-2 bg-amber-500 rounded-md mx-2 hover:scale-110 font-bold'>Download</div>
                     </div>
                 </div>
