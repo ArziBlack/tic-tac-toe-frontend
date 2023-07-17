@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Square = ({ val, chooseSquare }) => {
+const Square = ({ val, chooseSquare, id }) => {
     return (
-        <div className='square' onClick={chooseSquare}>{val}</div>
+        <div className='square' id={id} onClick={chooseSquare}>{val}</div>
     )
 }
 
