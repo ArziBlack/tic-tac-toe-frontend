@@ -72,9 +72,8 @@ const Game = () => {
         const { id } = e.target;
         console.log(id);
         if (player === "X") {
-            // setXPlay({...xPlay, [xVal]:id})
-            // // setXVal(xVal + 1);
-            // xplay.push(xPlay[0], xPlay[1], xPlay[2]);
+            xplay.push(xPlay.x1, xPlay.x2, xPlay.x3);
+            oplay.push(oPlay.o1, oPlay.o2, oPlay.o3);
             setXVal(vid =>    {if (vid > 1) return 0
                 return vid + 1
             });
@@ -106,9 +105,8 @@ const Game = () => {
                 ...oPlay,
                 ["o3"]: id
             });
-            // setOPlay({...oPlay, [oVal]:id})
-            // // setOVal(oVal + 1);
-            // oplay.push(oPlay[0], oPlay[1], oPlay[2]);
+            xplay.push(xPlay.x1, xPlay.x2, xPlay.x3);
+            oplay.push(oPlay.o1, oPlay.o2, oPlay.o3);
         };
         setVal(val + 1);
         console.log(xVal, oVal);
