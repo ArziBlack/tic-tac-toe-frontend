@@ -29,6 +29,8 @@ const Game = () => {
     const xplay = [];
     // save only 3 moves from the o Player, remove previous moves from array
     const oplay = [];
+    // combined moves from the x and o array
+    const xoplay = [];
     // const clk = document.querySelectorAll('.square');
     // clk.forEach(item => item.addEventListener('click', xoPush))
 
@@ -125,10 +127,13 @@ const Game = () => {
             oplay.push(oPlay.o1, oPlay.o2, oPlay.o3);
         };
         setVal(val + 1);
+        var xop = xplay.concat(oplay);
         console.log(xVal, oVal);
         console.log(xPlay, oPlay);
-        console.log(xPlay.x1, oPlay.o1);
+        console.log(xop);
         console.log(xplay, oplay);
+
+        // setBoard(boar)
     }
 
     const checkWin = () => {
