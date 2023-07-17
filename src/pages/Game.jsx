@@ -5,7 +5,7 @@ import { Patterns } from '../utils/Patterns'
 
 const Game = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
-    const [player, setPlayer] = useState("O");
+    const [player, setPlayer] = useState("X");
     const [result, setResult] = useState({ winner: "none", state: "none" });
     const [open, setOpen] = useState(true);
     const [round, setRound] = useState(1);
@@ -13,14 +13,14 @@ const Game = () => {
         setOpen(!open);
     }
     const [xPlay, setXPlay] = useState({
-        x1:"",
-        x2:"",
-        x3:""
+        x1: "",
+        x2: "",
+        x3: ""
     });
     const [oPlay, setOPlay] = useState({
-        o1:"",
-        o2:"",
-        o3:""
+        o1: "",
+        o2: "",
+        o3: ""
     });
     const [val, setVal] = useState(0);
     const [xVal, setXVal] = useState(0);
@@ -29,25 +29,15 @@ const Game = () => {
     const xplay = [];
     // save only 3 moves from the o Player, remove previous moves from array
     const oplay = [];
-    function xoPush(e) {
-       
-    }
     // const clk = document.querySelectorAll('.square');
     // clk.forEach(item => item.addEventListener('click', xoPush))
 
     // Makes sure only three id's of a player are on the board
-    const box1 = useRef();
-    function Play() {
-        if (player === "X" ) {
-            
-        } else if (player === "O" ) {
-            
-        }
-    }
 
     useEffect(() => {
         checkWin();
         checkDraw();
+        start();
         if (player === "X") {
             setPlayer("O");
         } else {
@@ -55,7 +45,31 @@ const Game = () => {
         };
     }, [board]);
     useEffect(() => {
-        if (result.state !== "none") {
+        if (result.state === "none" && round === 1) {
+            alert(`Game Started. ${player} Plays First.`);
+            start();
+        }
+        if (result.state === "won" && round === 1) {
+            alert(`${result.winner} Wins. Second Round. Game Started!.`);
+            secondRound();
+        }
+        if (result.state === "Draw" && round === 2) {
+            alert(`${result.winner} Wins. Game Ended in a Tie. Go Third Round. Game Started!!.`);
+            thirdRound();
+        }
+        if (result.state !== "none" && round === 1) {
+            alert(`${result.winner} Wins. Game Ended. Restart Game.`);
+            secondRound();
+        }
+        if (result.state !== "none" && round === 2) {
+            alert(`${result.winner} Wins. Game Ended. Restart Game.`);
+            restartGame();
+        }
+        // if (result.state !== "none" && round === 3) {
+        //     alert(`${result.winner} Wins. Game Ended. Restart Game.`);
+        //     thirdRound();
+        // }
+        if (result.state !== "none" && round === 3) {
             alert(`${result.winner} Wins. Game Ended. Restart Game.`);
             restartGame();
         }
@@ -68,13 +82,14 @@ const Game = () => {
             }
             return val;
         }))
-        
+
         const { id } = e.target;
         console.log(id);
         if (player === "X") {
             xplay.push(xPlay.x1, xPlay.x2, xPlay.x3);
             oplay.push(oPlay.o1, oPlay.o2, oPlay.o3);
-            setXVal(vid =>    {if (vid > 1) return 0
+            setXVal(vid => {
+                if (vid > 1) return 0
                 return vid + 1
             });
             xVal === 0 && setXPlay({
@@ -90,7 +105,8 @@ const Game = () => {
                 ["x3"]: id
             });
         } else if (player === "O") {
-            setOVal(vid =>    {if (vid > 1) return 0
+            setOVal(vid => {
+                if (vid > 1) return 0
                 return vid + 1
             });
             oVal === 0 && setOPlay({
@@ -113,8 +129,8 @@ const Game = () => {
         console.log(xPlay, oPlay);
         console.log(xPlay.x1, oPlay.o1);
         console.log(xplay, oplay);
-        //   xoPush();
     }
+
     const checkWin = () => {
         Patterns.forEach((currentPattern) => {
             const firstPlayer = board[currentPattern[0]];
@@ -131,7 +147,7 @@ const Game = () => {
                 setOPlay([]);
                 setXVal(0);
                 setOVal(0);
-                setResult({ winner: player, state: "won", })
+                setResult({ winner: player, state: "won", });
             }
         })
     }
@@ -157,9 +173,42 @@ const Game = () => {
             setPlayer("X");
         };
     }
+    const secondRound = () => {
+        setRound(2);
+        setBoard(["", "", "", "", "", "", "", "", ""]);
+        if (player === "X") {
+            setPlayer("O");
+        } else {
+            setPlayer("X");
+        };
+        setXPlay([]);
+        setOPlay([]);
+        setXVal(0);
+        setOVal(0);        
+}
+    function thirdRound() {
+        setRound(3);
+        setBoard(["", "", "", "", "", "", "", "", ""]);
+        if (player === "X") {
+            setPlayer("O");
+        } else {
+            setPlayer("X");
+        };
+        setXPlay([]);
+        setOPlay([]);
+        setXVal(0);
+        setOVal(0);
+    }
+    function start() {
+        console.log("game started");
+        setPlayer("X");
+    }
     return (
         <div className='game'> Tic Tac Toe Game OnChain Building in Progress...
-            {!open && <div className='board'>Round: 1, PlayerX:__ , PlayerO:___
+            {!open && <div className='board'>
+                <h1>
+                    Round: {round}, PlayerX:__ , PlayerO:___
+                </h1>
                 <div className="row">
                     <Square val={board[0]} chooseSquare={(e) => { chooseSquare(0, e) }} id='0' />
                     <Square val={board[1]} chooseSquare={(e) => { chooseSquare(1, e) }} id='1' />
