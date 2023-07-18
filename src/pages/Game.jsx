@@ -2,15 +2,20 @@ import React, { useEffect, useState, useRef } from 'react'
 import SideNav from '../components/SideNav'
 import Square from '../components/Square';
 import { Patterns } from '../utils/Patterns'
+import { FaTimes } from 'react-icons/fa';
 
 const Game = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
     const [player, setPlayer] = useState("X");
     const [result, setResult] = useState({ winner: "none", state: "none" });
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
+    const [Start, setStart] = useState(false);
     const [round, setRound] = useState(1);
     function toggleMenu() {
         setOpen(!open);
+    }
+    function toggleStart() {
+        setStart(!Start);
     }
     const [xPlay, setXPlay] = useState({
         x1: "",
@@ -38,8 +43,9 @@ const Game = () => {
 
     useEffect(() => {
         checkWin();
-        checkDraw();
-        start();
+        // checkDraw();
+        // start();
+        // setBoard(board);
         if (player === "X") {
             setPlayer("O");
         } else {
@@ -48,7 +54,8 @@ const Game = () => {
     }, [board]);
     useEffect(() => {
         if (result.state === "none" && round === 1) {
-            alert(`Game Started. ${player} Plays First.`);
+            // alert(`Game Started. ${player} Plays First.`);
+            setStart(true);
             start();
         }
         if (result.state === "won" && round === 1) {
@@ -67,10 +74,6 @@ const Game = () => {
             alert(`${result.winner} Wins. Game Ended. Restart Game.`);
             restartGame();
         }
-        // if (result.state !== "none" && round === 3) {
-        //     alert(`${result.winner} Wins. Game Ended. Restart Game.`);
-        //     thirdRound();
-        // }
         if (result.state !== "none" && round === 3) {
             alert(`${result.winner} Wins. Game Ended. Restart Game.`);
             restartGame();
@@ -131,9 +134,20 @@ const Game = () => {
         console.log(xVal, oVal);
         console.log(xPlay, oPlay);
         console.log(xop);
+        console.log(board);
         console.log(xplay, oplay);
-
-        // setBoard(boar)
+        const dada = board.filter((val, id) => {
+            xop.includes(val.indexOf(id))
+            return val
+        })
+        // console.log(xoop);
+        console.log(dada);
+        // setBoard(xop.map((val, idx) => {
+        //     if (idx === square && val === "") {
+        //         return player
+        //     }
+        //     return val;
+        // }))
     }
 
     const checkWin = () => {
@@ -153,6 +167,8 @@ const Game = () => {
                 setXVal(0);
                 setOVal(0);
                 setResult({ winner: player, state: "won", });
+            } else {
+                checkDraw();
             }
         })
     }
@@ -166,6 +182,7 @@ const Game = () => {
         });
 
         if (filled) {
+            // checkWin();
             setResult({ winner: "No winner", state: "Draw" })
         }
     };
@@ -189,8 +206,8 @@ const Game = () => {
         setXPlay([]);
         setOPlay([]);
         setXVal(0);
-        setOVal(0);        
-}
+        setOVal(0);
+    }
     function thirdRound() {
         setRound(3);
         setBoard(["", "", "", "", "", "", "", "", ""]);
@@ -230,6 +247,23 @@ const Game = () => {
                     <Square val={board[8]} chooseSquare={(e) => { chooseSquare(8, e) }} id='8' />
                 </div>
             </div>}
+
+            {Start && (<div className='fixed z-[300] left-0 right-60 top-0 bottom-10 w-screen h-screen'>
+                <div className='fixed left-0 right-60 bottom-10 top-0 w-screen h-screen bg-amber-700/75 flex items-center justify-center'>
+                    <div className='bg-rose-400 border-4 shadow-2xl w-2/4 h-[58%] m-8 rounded-md relative text-2xl p-1 text-justify'>
+                        <div className='absolute right-0 p-2 border-2 rounded-full m-3 bg-white'>
+                            <FaTimes color='red' size='25px' />
+                        </div>
+                        <h1 className='pt-10 font-bold text-3xl text-center'>Round One</h1>
+                        <h3 className='font-bold'>**Rules**</h3>
+                        <div className='p-2'>
+                            <p>*In this round you are given a maximum of 10Mins to Beat your Opponent Else the Round will be over with no Winner.</p>
+                            <p>*You are in free Mode so you would tokens only on the devnet, not mainnet</p>
+                            <p>*Once this round is over you shall proceed to Round Two.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>)}
             <SideNav open={open} toggleMenu={toggleMenu} />
         </div>
     )
