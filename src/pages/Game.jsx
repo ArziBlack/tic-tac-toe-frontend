@@ -251,7 +251,7 @@ const Game = () => {
             {Start && (<div className='fixed z-[300] left-0 right-60 top-0 bottom-10 w-screen h-screen'>
                 <div className='fixed left-0 right-60 bottom-10 top-0 w-screen h-screen bg-amber-700/75 flex items-center justify-center'>
                     <div className='bg-rose-400 border-4 shadow-2xl w-2/4 h-[58%] m-8 rounded-md relative text-2xl p-1 text-justify'>
-                        <div className='absolute right-0 p-2 border-2 rounded-full m-3 bg-white'>
+                        <div className='absolute right-0 p-2 border-2 rounded-full m-3 bg-white' onClick={toggleStart}>
                             <FaTimes color='red' size='25px' />
                         </div>
                         <h1 className='pt-10 font-bold text-3xl text-center'>Round One</h1>
