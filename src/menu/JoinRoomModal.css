@@ -1,0 +1,58 @@
+.joinRoomModal-container {
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(3px);
+
+  display: grid;
+  place-content: center;
+
+  position: fixed;
+}
+
+.joinRoomModal-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  z-index: -1;
+  background: var(--primary-color);
+}
+
+.joinRoomModal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding: 1rem;
+}
+
+.joinRoomModal-card-title {
+  color: var(--secondary-color);
+  text-align: center;
+}
+
+.joinRoomModal-card-input {
+  font-size: 2rem;
+  border: 3px solid var(--secondary-color);
+  background-color: var(--primary-color);
+  outline: none;
+  padding: 1rem;
+  border-radius: 16px;
+  color: var(--secondary-color);
+}
+
+.joinRoomModal-card-button {
+  background-color: var(--secondary-color);
+  border: 3px solid var(--primary-color);
+  border-radius: 16px;
+  font-size: 2rem;
+  padding: 1rem;
+  color: var(--primary-color);
+}
+
+.joinRoomModal-card-button:hover {
+  cursor: pointer;
+}

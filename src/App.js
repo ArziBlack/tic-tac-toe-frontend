@@ -5,23 +5,32 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import AboutUs from './pages/AboutUs';
 import Settings from './pages/Settings';
-import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import Mode from './pages/Mode';
+import Multi from './menu/Multiplayer'
+import { Challenge } from './menu/Challenge';
+import { Demo } from './menu/Demo';
+import Tournament from './menu/Tornament'
 
 function App() {
   return (
-    <div className="App">
+    <div className="">
       <Routes>
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='aboutus' element={<AboutUs />} />
         <Route path='settings' element={<Settings />} />
         <Route index  element={<Home />} />
+        <Route path='play'  element={<Mode />} >
+          <Route path='double'  element={<Multi/>}/>
+          <Route path='challenge'  element={<Challenge/>}/>
+          <Route path='demo'  element={<Demo/>}/>
+          <Route path='tournament'  element={<Tournament/>}/>
+        </Route>
         <Route
-          path='demo'
+          path='menu'
           element={<Game />} />
       </Routes>
-      {/* <Game/> */}
     </div>
   );
 }
