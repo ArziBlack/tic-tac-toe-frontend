@@ -11,6 +11,7 @@ import Multi from './menu/Multiplayer'
 import { Challenge } from './menu/Challenge';
 import { Demo } from './menu/Demo';
 import Tournament from './menu/Tornament'
+import Double from './mode/Double';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route index  element={<Home />} />
         <Route path='play'  element={<Mode />} >
           <Route path='double'  element={<Multi/>}/>
+          <Route path='double/roomId/:roomId'  element={<Double/>}/>
           <Route path='challenge'  element={<Challenge/>}/>
           <Route path='demo'  element={<Demo/>}/>
           <Route path='tournament'  element={<Tournament/>}/>
