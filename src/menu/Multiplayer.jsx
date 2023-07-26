@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaPlus, FaSearch, FaUserFriends } from 'react-icons/fa';
 
@@ -22,17 +23,30 @@ const modal = {
   },
 };
 
-const Multiplayer = () => {
-  const [roomCode, setRoomCode] = useState(null);
+const Multiplayer = ({ socket, setName, name }) => {
+  const [roomId, setRoomId] = useState(null);
+  
 
   useEffect(() => {
-    console.log(roomCode);
-    if (roomCode) {
-      // socket.emit("joinRoom", roomCode);
+    console.log(roomId);
+    if (roomId) {
+      socket.emit("joinRoom",  roomId);
+      socket.emit("name", {roomId, name});
     }
-  }, [roomCode]);
+  }, [roomId]);
+
+  
   const handleSave = () => {
-    setRoomCode(roomCode);
+    setRoomId(roomId);
+    let content = {
+      room: roomId,
+      data: {
+        name: name,
+        message:"Welcome to Tic Tac Toe on the Solana Blockchain"
+      }
+    }
+    socket.emit("info", content);
+    // socket.emit("name", {roomId, name});
   };
   return (
     <motion.div
@@ -51,12 +65,20 @@ const Multiplayer = () => {
           <div className='f1 p-2 flex flex-col'>
             <input
               className="border-2 p-2 "
+              type="text"
+              placeholder="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              className="border-2 p-2 "
               type="number"
               placeholder="eg: 1212"
-              onChange={(e) => setRoomCode(e.target.value)}
+              onChange={(e) => setRoomId(e.target.value)}
             />
             <button onClick={handleSave} className="border my-2 p-2 text-xl">
-              Create Two Player Game Room
+              <Link to={`roomId/${roomId}`}>
+                Create Two Player Game Room
+              </Link>
             </button>
             <h1 className='text-2xl my-1'>Join Game Using an Invite</h1>
             <div className='flex w-full my-5'>
@@ -64,20 +86,20 @@ const Multiplayer = () => {
                 className="border-2 p-2 w-[80%]"
                 type="number"
                 placeholder="mbt3-123-456-789"
-                onChange={(e) => setRoomCode(e.target.value)}
+                onChange={(e) => setRoomId(e.target.value)}
               />
               <button onClick={handleSave} className="border p-2 text-xl w-[20%] flex items-center justify-center">
                 {/* <FaPlus /> */}
-                <FaUserFriends/>
+                <FaUserFriends />
               </button>
-              </div>
+            </div>
             <h1 className='text-2xl my-1'>Search for an Invite</h1>
             <div className='flex w-full my-5'>
               <input
                 className="border-2 p-2 w-[80%]"
                 type="number"
                 placeholder="mbt3-123-456-789"
-                onChange={(e) => setRoomCode(e.target.value)}
+                onChange={(e) => setRoomId(e.target.value)}
               />
               <button onClick={handleSave} className="border p-2 text-xl w-[20%] flex items-center justify-center">
                 <FaSearch />

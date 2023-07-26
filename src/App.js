@@ -12,8 +12,16 @@ import { Challenge } from './menu/Challenge';
 import { Demo } from './menu/Demo';
 import Tournament from './menu/Tornament'
 import Double from './mode/Double';
+import io from "socket.io-client";
+import { useEffect, useState } from 'react';
+
+const socket = io.connect("http://localhost:5000");
 
 function App() {
+  // useEffect(()=>{
+  //   socket
+  // },[socket])
+  const [name, setName] = useState("name");
   return (
     <div className="">
       <Routes>
@@ -23,8 +31,8 @@ function App() {
         <Route path='settings' element={<Settings />} />
         <Route index  element={<Home />} />
         <Route path='play'  element={<Mode />} >
-          <Route path='double'  element={<Multi/>}/>
-          <Route path='double/roomId/:roomId'  element={<Double/>}/>
+          <Route path='double'  element={<Multi socket={socket} setName={setName} name={name}/>}/>
+          <Route path='double/roomId/:roomId'  element={<Double socket={socket} setName={setName} name={name}/>}/>
           <Route path='challenge'  element={<Challenge/>}/>
           <Route path='demo'  element={<Demo/>}/>
           <Route path='tournament'  element={<Tournament/>}/>

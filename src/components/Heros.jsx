@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+// import { Wallet } from './Wallet'
 import { FaCubes, FaTimes } from 'react-icons/fa'
 import modeimg from '../assets/images/heros.jpg'
 
@@ -10,8 +11,10 @@ const Heros = () => {
     }
     return (
         <div className=' relative flex  w-screen h-screen'>
-            <button className='fixed right-0 top-0 p-4 border text-2xl font-bold font-mono bg-rose-700 m-1 uppercase text-white shadow-2xl shadow-black hover:bg-slate-800 z-10 transition'>connect</button>
-            <div className=' w-screen h-full'>
+            <div className='fixed right-0 top-0 border text-2xl font-bold font-mono bg-rose-700 m-1 uppercase text-white shadow-2xl shadow-black hover:bg-slate-800 z-10 transition' >
+                {/* <Wallet/> */}
+                </div> 
+            <div className=' w-screen h-full'> 
                 <img src={modeimg} alt="img" className=' w-full h-full z-0' />
             </div>
             <section className='absolute top-0 right-0 left-0 w-full h-full'>
