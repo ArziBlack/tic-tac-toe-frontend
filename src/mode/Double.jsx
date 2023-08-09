@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Modal from '../components/Modal'
 import Square from "../components/Square";
 
 const Double = ({ socket, name }) => {
-    const {roomId} = useParams();
+    const { roomId } = useParams();
     console.log(roomId);
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
     const [canPlay, setCanPlay] = useState(true);
@@ -12,16 +13,16 @@ const Double = ({ socket, name }) => {
     console.log(Players);
     let oppositePlayer;
     let value;
-    
+
     useEffect(() => {
-        socket.on("name", (e)=>{
+        socket.on("name", (e) => {
             console.log(e.players);
             setPlayers(e.players);
             const found = Players.find(obx => obx.p1.P1Name === name || obx.p2.P2Name === name);
             found.p1.P1Name === name ? oppositePlayer = found.p2.P2Name : oppositePlayer = found.p1.P1Name
             found.p1.P1Name === name ? value = found.p2.P2Val : oppositePlayer = found.p1.P1Val
         })
-        socket.on("data", (TPMPlaying)=> {
+        socket.on("data", (TPMPlaying) => {
             console.log(TPMPlaying);
         })
         socket.on("updateGame", (id) => {
@@ -41,11 +42,7 @@ const Double = ({ socket, name }) => {
         const id = e.currentTarget.id;
         if (canPlay && board[id] === "") {
             setBoard((data) => ({ ...data, [id]: Player }));
-            // if (Player === "X") {
-            //     setPlayer("O");
-            // } else {
-            //     setPlayer("X")
-            // }
+
             socket.emit("play", { id, roomId });
             setCanPlay(false);
         }
@@ -80,7 +77,11 @@ const Double = ({ socket, name }) => {
                     <Square val={board[8]} chooseSquare={(e) => { handleCell(e) }} id='8' />
                 </div>
             </div>
-            <div></div>
+            <Modal>
+                <h1>
+                    Waiting for the other Player To Join the Game
+                </h1>
+            </Modal>
         </div>
     );
 };
