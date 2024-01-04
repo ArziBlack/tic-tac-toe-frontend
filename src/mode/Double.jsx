@@ -22,9 +22,6 @@ const Double = ({ socket, name }) => {
             found.p1.P1Name === name ? oppositePlayer = found.p2.P2Name : oppositePlayer = found.p1.P1Name
             found.p1.P1Name === name ? value = found.p2.P2Val : oppositePlayer = found.p1.P1Val
         })
-        socket.on("data", (TPMPlaying) => {
-            console.log(TPMPlaying);
-        })
         socket.on("updateGame", (id) => {
             console.log("use Effect", id);
             setBoard((data) => ({ ...data, [id]: Player }));
@@ -43,7 +40,7 @@ const Double = ({ socket, name }) => {
         if (canPlay && board[id] === "") {
             setBoard((data) => ({ ...data, [id]: Player }));
 
-            socket.emit("play", { id, roomId });
+            socket.emit("play", { id, roomId, name });
             setCanPlay(false);
         }
 

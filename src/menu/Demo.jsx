@@ -6,6 +6,7 @@ import GameModal from '../components/GameModal';
 export const Demo = () => {
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
     const [player, setPlayer] = useState("X");
+    const [full, setFull] = useState();
     const [result, setResult] = useState({ winner: "none", state: "none" });
     const [round, setRound] = useState(1);
     const [Start, setStart] = useState(false);
@@ -40,7 +41,6 @@ export const Demo = () => {
     }, [board]);
     useEffect(() => {
         if (result.state === "none" && round === 1) {
-            // alert(`Game Started. ${player} Plays First.`);
             start();
         }
         if (result.state === "won" && round === 1) {
@@ -64,6 +64,13 @@ export const Demo = () => {
             restartGame();
         }
     }, [result])
+
+    function updateBox() {
+        // setBoard(board.filter((item, idx)=> if () item === "X" && idx === full.x1 || idx === full.x2 || idx === full.x3 || idx === full.y1 || idx === full.y2 || idx === full.y3));
+        // setBoard();
+    }
+
+    // 08036274596
     const chooseSquare = (square, e) => {
         setBoard(board.map((val, idx) => {
             if (idx === square && val === "") {
@@ -114,6 +121,7 @@ export const Demo = () => {
         };
         setVal(val + 1);
         var xop = xplay.concat(oplay);
+        setFull(xop);
     }
     const restartGame = () => {
         setBoard(["", "", "", "", "", "", "", "", ""]);
@@ -192,7 +200,7 @@ export const Demo = () => {
     return (
         <div className='flex items-center justify-center'>
             <div className='board'>
-                <h1>
+                <h1> 
                     Round: {round}, PlayerX:__ , PlayerO:___
                 </h1>
                 <div className="row">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Game from './Game'
+import DoublePlayer from '../games/DoublePlayer'
 
 const Mode = () => {
     const [open, setOpen] = useState(false);
