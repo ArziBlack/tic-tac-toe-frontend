@@ -6,10 +6,12 @@ import '../styles/cross.css';
 import { useAuth } from '../utils/ContextAPI';
 
 let roomId;
-let name;
+let name = "";
 let opposite;
-let value;
-let oppositeValue;
+let turn = "X";
+let dropzone;
+let dropzoneId;
+let boxId;
 
 const Quick = ({ socket }) => {
     // const {  } = useAuth();
@@ -20,13 +22,33 @@ const Quick = ({ socket }) => {
     const [game, setGame] = useState({});
 
     useEffect(() => {
-        socket.on("data", (TPMPlaying) => {
-            console.log(TPMPlaying);
+        socket.on("qfind", (TPMPlaying) => {
             setTimeout(() => {
                 handleState(TPMPlaying);
             }, 2000);
         });
     }, [socket]);
+
+    useEffect(() => {
+        socket.on('drop', async({data, dropzoneId}) => {
+            let temp = await document.getElementById(data);
+            const allBox = document.querySelectorAll(".dropBox");
+            let found = allBox[dropzoneId];
+            data && await found.appendChild(temp);
+            console.log(turn);
+        });
+        checkWin();
+    }, [socket, dropzone]);
+
+    useEffect(() => {
+        socket.on("qplay", (value)=> {
+            turn = value;
+            console.log(turn + " turn");
+            console.log(value + " value");
+        })
+    }, []);
+
+    console.log(name)
 
     function refreshPage() {
         window.location.reload();
@@ -35,11 +57,7 @@ const Quick = ({ socket }) => {
     async function handleState(state) {
         const found = await state?.find(item => item.p1.P1Name === name || item.p2.P2Name === name);
         found.p1.P1Name === name ? opposite = found.p2.P2Name : opposite = found.p1.P1Name;
-        if (found.p1.P1Name === name) {
-            value = found.p2.P2Val
-        } else if (found.p2.P2Name === name) {
-            oppositeValue = found.p1.P1Val;
-        }
+        found?.p1?.P1Name === name ? setPlayer(found?.p1?.P1Val) : setPlayer(found?.p2?.P2Val)
         setGame(found);
         setStart(true);
     }
@@ -60,19 +78,30 @@ const Quick = ({ socket }) => {
     function Drop(e, square) {
         e.preventDefault();
         var data = e.dataTransfer.getData("text");
-        if (player === "X" && data === "X1" || data === "X2" || data === "X3") {
+        dropzone = e.target;
+        dropzoneId = e.target.id;
+        // const newPosition = { x: e.clientX, y: e.clientY };
+        if (turn === "X" && data === "X1" || data === "X2" || data === "X3") {
             e.target.appendChild(document.getElementById(data));
-            setPlayer("O")
-        } else if (player === "O" && data === "O1" || data === "O2" || data === "O3") {
+            // Send the movePiece event to the server
+            //    socket.emit('movePiece', { data, newPosition });
+            // turn = "O"; 
+            socket.emit('drop', {data, dropzoneId});
+        } else if (turn === "O" && data === "O1" || data === "O2" || data === "O3") {
             e.target.appendChild(document.getElementById(data));
-            setPlayer("X")
+            // Send the movePiece event to the server
+            //    socket.emit('movePiece', { data, newPosition });
+            // turn = "X";
+            socket.emit('drop', {data, dropzoneId});
         }
         setBoard(board.map((val, idx) => {
             if (idx === square && val === "") {
+                socket.emit("playing", {name, turn});
                 return player
             }
             return val;
         }))
+
         checkWin();
     }
 
@@ -114,29 +143,31 @@ const Quick = ({ socket }) => {
                 message: "Welcome to Tic Tac Toe on the Solana Blockchain"
             }
         }
-        await socket.emit("quick", { roomId, name });
+        await socket.emit("qfind", { roomId, name });
     };
 
     return (
         <div className='relative flex items-center flex-col h-screen min-h-screen justify-center py-2 w-full bg-amber-500'>
             <div className='flex w-full justify-between items-center px-4'>
                 <div className='p-1 bg-black text-white rounded'>
-                    <h1>Player {game?.p1?.P1Name === name ? game?.p2?.P2Val : game?.p1?.P1Val}: {opposite}</h1>
+                    <h1 className="uppercase font-bold">Opponent: {game?.p1?.P1Name === name ? game?.p2?.P2Val : game?.p1?.P1Val}: {opposite}</h1>
                 </div>
+                <span className="p-2 my-1 bg-stone-500 text-white font-bold rounded-full">VS</span>
                 <div className='bg-black text-white p-1 rounded'>
-                    <h1>You {game?.p1?.P1Name === name ? game?.p1?.P1Val : game?.p2?.P2Val}: {name}</h1>
+                    <h1 className="uppercase font-bold">{game?.p1?.P1Name === name ? game?.p1?.P1Val : game?.p2?.P2Val}: {name}</h1>
                 </div>
             </div>
+            <span className="p-1 my-1 bg-stone-500 text-white font-bold">It's {turn}'s Turn</span>
             <div className='flex justify-center items-center h-full w-full'>
                 <div className='drag flex relative justify-center items-center flex-col h-[420px] w-[100px] gap-2 mx-10 cursor-grab'>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable="true" onDragStart={Drag} id='X1'>X</div>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X" ? true : false} onDragStart={Drag} id='X1'>X</div>
                     </div>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable="true" onDragStart={Drag} id='X2'>X</div>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X"  ? true : false} onDragStart={Drag} id='X2'>X</div>
                     </div>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable="true" onDragStart={Drag} id='X3'>X</div>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X"  ? true : false} onDragStart={Drag} id='X3'>X</div>
                     </div>
                 </div>
                 <div className="relative grid grid-cols-3">
@@ -152,24 +183,26 @@ const Quick = ({ socket }) => {
                 </div>
                 <div className='drag flex relative justify-center items-center flex-col h-[420px] w-[100px] gap-2 mx-10 cursor-grab'>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable="true" id='O1'></div>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O1'></div>
                     </div>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable="true" id='O2'></div>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O2'></div>
                     </div>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable="true" id='O3'></div>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O3'></div>
                     </div>
                 </div>
             </div>
             <span>{info}</span>
-            <button className='reset py-2 px-6 bg-black text-white cursor-pointer'>Reset</button>
+            <button className='reset py-2 px-6 bg-black text-white cursor-pointer' onClick={refreshPage}>Reset</button>
             {!start && (
                 <Modal>
                     <h1 className="text-3xl font-bold text-center">Quick Game Mode</h1>
-                    <p className='text-sm text-center'><em>
-                        Play with any random player available online
-                    </em></p>
+                    <p className='text-sm text-center'>
+                        <em>
+                            Play with any random player available online
+                        </em>
+                    </p>
                     <div className='flex w-full p-3 h-full'>
                         <div className='f1 p-2 flex flex-col'>
                             <input
