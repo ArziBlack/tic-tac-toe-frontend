@@ -5,38 +5,33 @@ import Modal from '../components/Modal'
 import '../styles/cross.css';
 import { useAuth } from '../utils/ContextAPI';
 
-let playerId;
-let currentPlayer;
-let otherPlayer;
-let playerName;
-let player;
-let players = [];
-let activeGame = {};
-let turn;
 let roomId;
 let name = "";
 let opposite;
+let turn = "X";
 let dropzone;
 let dropzoneId;
 let boxId;
+let currentPlayer;
 
 const Quick = ({ socket }) => {
+    // const {  } = useAuth();
     const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+    const [player, setPlayer] = useState("X");
     const [info, setInfo] = useState("");
     const [start, setStart] = useState(false);
     const [game, setGame] = useState({});
 
-    let turnElement = document.getElementById("turn");
     useEffect(() => {
-        socket.on('playerName', (name) => {
-            console.log(name)
-            // playerName = name;
-            // document.getElementById('playerName').innerText = `You are ${playerName}`;
+        socket.on("qfind", (TPMPlaying) => {
+            setTimeout(() => {
+                handleState(TPMPlaying);
+            }, 2000);
         });
     }, [socket]);
 
     useEffect(() => {
-        socket.on('drop', async ({ data, dropzoneId }) => {
+        socket.on('drop', async({data, dropzoneId}) => {
             let temp = await document.getElementById(data);
             const allBox = document.querySelectorAll(".dropBox");
             let found = allBox[dropzoneId];
@@ -47,49 +42,43 @@ const Quick = ({ socket }) => {
     }, [socket, dropzone]);
 
     useEffect(() => {
-        // Listen for the 'turn' event
-        socket.on('turn', (turn) => {
-            console.log(`Current Turn: ${turn}`);
-            // Enable the 'End Turn' button only for the active player
-            // document.getElementById('endTurnButton').disabled = turn % 2 !== players.indexOf(playerName);
-        });
-        socket.on('socket', (data) => {
-            playerId = data;
-            console.log("your player id is => " + playerId);
+        socket.on("qplay", (value)=> {
+            turn = value;
+            console.log(turn + " turn");
+            console.log(value + " value");
         })
-        socket.on('gameStart', (game) => {
-            console.log(`Current game: ${game}`);
-            setTimeout(() => {
-                activeGame = game;
-                players = game.players;
-                player = activeGame.find(item => item.socketId === playerId);
-                otherPlayer = activeGame.find(item => item.socketId !== playerId);
-                // calcTurn(game.currentTurn)
-                console.log(player);
-                console.log(otherPlayer);
-                console.log(players);
-            }, 1000);
-        })
-
-        // Listen for the 'playerDisconnected' event
-        socket.on('playerDisconnected', (disconnectedPlayer) => {
-            console.log(`Player ${disconnectedPlayer} disconnected`);
-        });
+        socket.on('nextTurn', (nextPlayer) => {
+            currentPlayer = nextPlayer;
+            console.log(nextPlayer)
+            // if (player === currentPlayer) {
+            //   $('#board').append('<p>Your turn!</p>');
+            // } else {
+            //   $('#board').append('<p>Waiting for opponent...</p>');
+            // }
+          });
     }, []);
 
-    function calcTurn(current) {
-        console.log(current);
-        console.log(0 % 2, "0 % 2");
-        console.log(1 % 2, "1 % 2");
-        console.log(2 % 2, "2 % 2");
-        console.log(3 % 2, "3 % 2");
-    }
+    
+
     function refreshPage() {
         window.location.reload();
     }
 
+    async function handleState(state) {
+        const found = await state?.find(item => item.p1.P1Name === name || item.p2.P2Name === name);
+        found.p1.P1Name === name ? opposite = found.p2.P2Name : opposite = found.p1.P1Name;
+        found?.p1?.P1Name === name ? setPlayer(found?.p1?.P1Val) : setPlayer(found?.p2?.P2Val)
+        setGame(found);
+        setStart(true);
+    }
+
     function onChange(e) {
         name = e.target.value;
+    }
+
+    const generateId = () => {
+        const id = Math.floor(Math.random() * 2000);
+        return id;
     }
 
     function airDrop(e) {
@@ -101,15 +90,22 @@ const Quick = ({ socket }) => {
         var data = e.dataTransfer.getData("text");
         dropzone = e.target;
         dropzoneId = e.target.id;
+        console.log(name)
         // const newPosition = { x: e.clientX, y: e.clientY };
-        // Send the movePiece event to the server
-        // socket.emit('movePiece', { data, newPosition });
-        e.target.appendChild(document.getElementById(data));
-        socket.emit('drop', { data, dropzoneId, otherId: otherPlayer.socketId });
-        socket.emit('endTurn', otherPlayer.socketId);
-
+        if (turn === "X" && data === "X1" || data === "X2" || data === "X3") {
+            e.target.appendChild(document.getElementById(data));
+            // Send the movePiece event to the server
+            //    socket.emit('movePiece', { data, newPosition });
+            socket.emit('drop', {data, dropzoneId});
+        } else if (turn === "O" && data === "O1" || data === "O2" || data === "O3") {
+            e.target.appendChild(document.getElementById(data));
+            // Send the movePiece event to the server
+            //    socket.emit('movePiece', { data, newPosition });
+            socket.emit('drop', {data, dropzoneId});
+        }
         setBoard(board.map((val, idx) => {
             if (idx === square && val === "") {
+                socket.emit("playing", {name});
                 return player
             }
             return val;
@@ -146,32 +142,41 @@ const Quick = ({ socket }) => {
     }
 
     const handleSave = async () => {
-        await socket.emit("quickPlayFind", name);
-        calcTurn(0)
+        roomId = await generateId()
+        console.log(roomId);
+        let content = {
+            room: roomId,
+            data: {
+                name: name,
+                turn: "X",
+                message: "Welcome to Tic Tac Toe on the Solana Blockchain"
+            }
+        }
+        await socket.emit("qfind", { roomId, name });
     };
 
     return (
         <div className='relative flex items-center flex-col h-screen min-h-screen justify-center py-2 w-full bg-amber-500'>
             <div className='flex w-full justify-between items-center px-4'>
                 <div className='p-1 bg-black text-white rounded'>
-                    <h1 className="uppercase font-bold">Opponent: {activeGame[0]}: {opposite}</h1>
+                    <h1 className="uppercase font-bold">Opponent: {game?.p1?.P1Name === name ? game?.p2?.P2Val : game?.p1?.P1Val}: {opposite}</h1>
                 </div>
                 <span className="p-2 my-1 bg-stone-500 text-white font-bold rounded-full">VS</span>
                 <div className='bg-black text-white p-1 rounded'>
-                    <h1 className="uppercase font-bold">{activeGame[1]}: {name}</h1>
+                    <h1 className="uppercase font-bold">{game?.p1?.P1Name === name ? game?.p1?.P1Val : game?.p2?.P2Val}: {name}</h1>
                 </div>
             </div>
-            <span id="turn" className="p-1 my-1 bg-stone-500 text-white font-bold">It's #'s Turn</span>
+            <span className="p-1 my-1 bg-stone-500 text-white font-bold">It's {turn}'s Turn</span>
             <div className='flex justify-center items-center h-full w-full'>
                 <div className='drag flex relative justify-center items-center flex-col h-[420px] w-[100px] gap-2 mx-10 cursor-grab'>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <button className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={true} onDragStart={Drag} id='X1'>X</button>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X" ? true : false} onDragStart={Drag} id='X1'>X</div>
                     </div>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <button className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={true} onDragStart={Drag} id='X2'>X</button>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X"  ? true : false} onDragStart={Drag} id='X2'>X</div>
                     </div>
                     <div className="dragbox p-4 bg-slate-900/50">
-                        <button className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={true} onDragStart={Drag} id='X3'>X</button>
+                        <div className="cross relative w-12 h-12 flex justify-center items-center before:absolute before:w-1 before:h-full before:bg-white before:rotate-45 after:absolute after:w-full after:h-1 after:bg-white after:rotate-45" draggable={turn === "X"  ? true : false} onDragStart={Drag} id='X3'>X</div>
                     </div>
                 </div>
                 <div className="relative grid grid-cols-3">
@@ -187,13 +192,13 @@ const Quick = ({ socket }) => {
                 </div>
                 <div className='drag flex relative justify-center items-center flex-col h-[420px] w-[100px] gap-2 mx-10 cursor-grab'>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <button className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={true} id='O1'></button>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O1'></div>
                     </div>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <button className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={true} id='O2'></button>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O2'></div>
                     </div>
                     <div className="dragbox bg-slate-900/50 p-2">
-                        <button className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={true} id='O3'></button>
+                        <div className="circle relative w-12 h-12 border-4 border-white rounded-full" onDragStart={Drag} draggable={turn === "O" ? true : false} id='O3'></div>
                     </div>
                 </div>
             </div>
