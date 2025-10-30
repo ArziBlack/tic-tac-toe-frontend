@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaCubes } from 'react-icons/fa'
 
@@ -24,9 +23,11 @@ const Heros = () => {
         <h1 className='text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-2xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-200'>Dice Tic Tac Toe</h1>
         <p className='mt-4 max-w-2xl text-lg md:text-xl text-white drop-shadow-lg'>Fast, simple, and fun tic-tac-toe with multiple modes. Jump into a quick match or play with a friend.</p>
         <div className='mt-8 flex flex-wrap items-center justify-center gap-3'>
-          <Link to='/play/quick' className='px-6 py-3 rounded-md bg-amber-500 text-black font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>Quick Match</Link>
-          <Link to='/play/drag-drop' className='px-6 py-3 rounded-md bg-green-500 text-white font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>Drag & Drop</Link>
-          <Link to='/play/double' className='px-6 py-3 rounded-md bg-white/20 backdrop-blur-sm border border-white/40 hover:bg-white/30 transition-all shadow-lg'>Two Player</Link>
+          <Link to='/play/quick' className='px-6 py-3 rounded-md bg-amber-500 text-black font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>⚡ Quick Match</Link>
+          <Link to='/play/drag-drop' className='px-6 py-3 rounded-md bg-green-500 text-white font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>🎯 Drag & Drop</Link>
+          <Link to='/play/double' className='px-6 py-3 rounded-md bg-indigo-500 text-white font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>👥 Two Player</Link>
+          <Link to='/play/invite' className='px-6 py-3 rounded-md bg-pink-500 text-white font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>💌 Invite Player</Link>
+          <Link to='/play/tournament' className='px-6 py-3 rounded-md bg-orange-500 text-white font-bold hover:scale-105 hover:shadow-xl transition-all shadow-lg'>🏆 Tournament</Link>
         </div>
       </div>
     </section>
