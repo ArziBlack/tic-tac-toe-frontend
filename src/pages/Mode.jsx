@@ -1,21 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Game from './Game'
-import DoublePlayer from '../games/DoublePlayer'
 
 const Mode = () => {
-    const [open, setOpen] = useState(false);
-    function toggleMenu() {
-        setOpen(!open);
-    }
-    return (
-        <div className='w-full h-full'>
-            {open && (<div>
-                <Game open={open} toggleMenu={toggleMenu}/>
-            </div>)}
-            <Outlet />
-        </div>
-    )
+  return (
+    <div className='w-full h-full'>
+      <Outlet />
+    </div>
+  )
 }
 
 export default Mode

@@ -13,7 +13,8 @@ const Heros = () => {
         <h1 className='text-5xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg'>Dice Tic Tac Toe</h1>
         <p className='mt-4 max-w-2xl text-lg md:text-xl text-white/90'>Fast, simple, and fun tic-tac-toe with multiple modes. Jump into a quick match or play with a friend.</p>
         <div className='mt-8 flex flex-wrap items-center justify-center gap-3'>
-          <Link to='/play/quick' className='px-6 py-3 rounded-md bg-amber-500 text-black font-bold hover:scale-105 transition-transform'>Play Quick Match</Link>
+          <Link to='/play/quick' className='px-6 py-3 rounded-md bg-amber-500 text-black font-bold hover:scale-105 transition-transform'>Quick Match</Link>
+          <Link to='/play/drag-drop' className='px-6 py-3 rounded-md bg-green-500 text-white font-bold hover:scale-105 transition-transform'>Drag & Drop</Link>
           <Link to='/play/double' className='px-6 py-3 rounded-md bg-white/10 border border-white/30 hover:bg-white/20 transition'>Two Player</Link>
           <Link to='/play/demo' className='px-6 py-3 rounded-md bg-white/10 border border-white/30 hover:bg-white/20 transition'>Demo</Link>
         </div>

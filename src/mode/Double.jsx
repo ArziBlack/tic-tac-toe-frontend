@@ -1,86 +1,144 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Modal from '../components/Modal'
-import Square from "../components/Square";
+import { useParams, Link } from "react-router-dom";
+import { Patterns } from '../utils/Patterns';
 
 const Double = ({ socket, name }) => {
-    const { roomId } = useParams();
-    console.log(roomId);
-    const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
-    const [canPlay, setCanPlay] = useState(true);
-    const [Player, setPlayer] = useState("X");
-    const [Players, setPlayers] = useState([]);
-    console.log(Players);
-    let oppositePlayer;
-    let value;
+  const { roomId } = useParams();
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [currentPlayer, setCurrentPlayer] = useState('X');
+  const [mySymbol, setMySymbol] = useState(null);
+  const [opponent, setOpponent] = useState(null);
+  const [isMyTurn, setIsMyTurn] = useState(false);
+  const [winner, setWinner] = useState(null);
+  const [waiting, setWaiting] = useState(true);
 
-    useEffect(() => {
-        socket.on("name", (e) => {
-            console.log(e.players);
-            setPlayers(e.players);
-            const found = Players.find(obx => obx.p1.P1Name === name || obx.p2.P2Name === name);
-            found.p1.P1Name === name ? oppositePlayer = found.p2.P2Name : oppositePlayer = found.p1.P1Name
-            found.p1.P1Name === name ? value = found.p2.P2Val : oppositePlayer = found.p1.P1Val
-        })
-        socket.on("updateGame", (id) => {
-            console.log("use Effect", id);
-            setBoard((data) => ({ ...data, [id]: Player }));
-            if (Player === "X") {
-                setPlayer("O");
-            } else {
-                setPlayer("X")
-            }
-            setCanPlay(true);
-        }, [canPlay]);
-        return () => socket.off("updateGame");
+  useEffect(() => {
+    socket.emit('joinRoom', { roomId, name });
+
+    socket.on('gameStart', ({ players, startingPlayer }) => {
+      setWaiting(false);
+      const me = players.find(p => p.name === name);
+      const opp = players.find(p => p.name !== name);
+      setMySymbol(me?.symbol || 'X');
+      setOpponent(opp?.name || 'Opponent');
+      setCurrentPlayer(startingPlayer);
+      setIsMyTurn(startingPlayer === me?.symbol);
     });
 
-    const handleCell = (e) => {
-        const id = e.currentTarget.id;
-        if (canPlay && board[id] === "") {
-            setBoard((data) => ({ ...data, [id]: Player }));
+    socket.on('updateGame', ({ board: newBoard, currentPlayer: nextPlayer }) => {
+      setBoard(newBoard);
+      setCurrentPlayer(nextPlayer);
+      setIsMyTurn(nextPlayer === mySymbol);
+      checkWinner(newBoard);
+    });
 
-            socket.emit("play", { id, roomId, name });
-            setCanPlay(false);
-        }
+    socket.on('playerDisconnected', () => {
+      alert('Opponent disconnected');
+    });
 
-        if (
-            (board[0] === "X" && board[1] === "X" && board[2] === "X") ||
-            (board[0] === "O" && board[1] === "O" && board[2] === "O")
-        ) {
-            setBoard(["", "", "", "", "", "", "", "", ""]);
-        }
+    return () => {
+      socket.off('gameStart');
+      socket.off('updateGame');
+      socket.off('playerDisconnected');
     };
+  }, [socket, roomId, name, mySymbol]);
 
+  function checkWinner(squares) {
+    for (let pattern of Patterns) {
+      const [a, b, c] = pattern;
+      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        setWinner(squares[a]);
+        return;
+      }
+    }
+  }
+
+  function handleClick(index) {
+    if (!isMyTurn || board[index] || winner || waiting) return;
+    socket.emit('play', { roomId, index, symbol: mySymbol });
+  }
+
+  function resetGame() {
+    setBoard(Array(9).fill(null));
+    setWinner(null);
+    setCurrentPlayer('X');
+    setIsMyTurn(mySymbol === 'X');
+  }
+
+  if (waiting) {
     return (
-        <div className='flex items-center justify-center relative'>
-            <div className='board'>
-                <h1>
-                    Round: 1, PlayerX:{name} , PlayerO:{oppositePlayer}, its {value}'s turn
-                </h1>
-                <div className="row">
-                    <Square val={board[0]} chooseSquare={(e) => { handleCell(e) }} id='0' />
-                    <Square val={board[1]} chooseSquare={(e) => { handleCell(e) }} id='1' />
-                    <Square val={board[2]} chooseSquare={(e) => { handleCell(e) }} id='2' />
-                </div>
-                <div className="row">
-                    <Square val={board[3]} chooseSquare={(e) => { handleCell(e) }} id='3' />
-                    <Square val={board[4]} chooseSquare={(e) => { handleCell(e) }} id='4' />
-                    <Square val={board[5]} chooseSquare={(e) => { handleCell(e) }} id='5' />
-                </div>
-                <div className="row">
-                    <Square val={board[6]} chooseSquare={(e) => { handleCell(e) }} id='6' />
-                    <Square val={board[7]} chooseSquare={(e) => { handleCell(e) }} id='7' />
-                    <Square val={board[8]} chooseSquare={(e) => { handleCell(e) }} id='8' />
-                </div>
-            </div>
-            <Modal>
-                <h1>
-                    Waiting for the other Player To Join the Game
-                </h1>
-            </Modal>
+      <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500'>
+        <div className='bg-white p-8 rounded-2xl shadow-2xl text-center'>
+          <div className='animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4'></div>
+          <h2 className='text-2xl font-bold text-gray-800 mb-2'>Waiting for opponent...</h2>
+          <p className='text-gray-600 mb-4'>Room Code: <span className='font-mono font-bold text-purple-600'>{roomId}</span></p>
+          <p className='text-sm text-gray-500'>Share this code with your friend</p>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4'>
+      <div className='bg-white rounded-2xl shadow-2xl p-6 max-w-lg w-full'>
+        <div className='flex justify-between items-center mb-4'>
+          <div className='text-left'>
+            <p className='text-sm text-gray-600'>You ({mySymbol})</p>
+            <p className='font-bold text-gray-800'>{name}</p>
+          </div>
+          <div className='text-2xl font-bold text-purple-600'>VS</div>
+          <div className='text-right'>
+            <p className='text-sm text-gray-600'>Opponent ({mySymbol === 'X' ? 'O' : 'X'})</p>
+            <p className='font-bold text-gray-800'>{opponent}</p>
+          </div>
+        </div>
+
+        <div className='text-center mb-4'>
+          {winner ? (
+            <div className='text-2xl font-bold text-green-600'>
+              {winner === mySymbol ? '🎉 You Win!' : '😢 You Lose'}
+            </div>
+          ) : (
+            <div className='text-lg font-bold text-gray-700'>
+              {isMyTurn ? "Your Turn" : "Opponent's Turn"}
+            </div>
+          )}
+        </div>
+
+        <div className='grid grid-cols-3 gap-2 mb-4'>
+          {board.map((cell, index) => (
+            <button
+              key={index}
+              onClick={() => handleClick(index)}
+              className={`h-24 bg-gradient-to-br from-purple-100 to-pink-100 border-4 border-purple-300 text-5xl font-bold flex items-center justify-center rounded-lg transition ${
+                isMyTurn && !cell && !winner ? 'hover:bg-purple-200 cursor-pointer' : 'cursor-not-allowed'
+              }`}
+              disabled={!isMyTurn || !!cell || !!winner}
+            >
+              {cell}
+            </button>
+          ))}
+        </div>
+
+        <div className='flex gap-2'>
+          {winner && (
+            <button
+              onClick={resetGame}
+              className='flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition'
+            >
+              Play Again
+            </button>
+          )}
+          <Link
+            to='/play/double'
+            className='flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition text-center'
+          >
+            Leave Room
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Double;
