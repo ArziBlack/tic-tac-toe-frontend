@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import ContextAPIProvider from './utils/ContextAPI';
+import ContextAPIProvider from './utils/ContextAPI.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -3,11 +3,6 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@solana/wallet-adapter-base": "^0.9.22",
-    "@solana/wallet-adapter-react": "^0.15.33",
-    "@solana/wallet-adapter-react-ui": "^0.9.32",
-    "@solana/wallet-adapter-wallets": "^0.19.19",
-    "@solana/web3.js": "^1.78.0",
     "boardgame.io": "^0.50.2",
     "browserify-zlib": "^0.2.0",
     "crypto-browserify": "^3.12.0",
@@ -19,7 +14,6 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
     "react-router-dom": "^6.12.1",
-    "react-scripts": "5.0.1",
     "socket.io-client": "^4.7.1",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
@@ -28,10 +22,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +46,10 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.2.7"
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.2.7",
+    "vite": "^5.0.0"
   }
 }

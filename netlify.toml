@@ -1,0 +1,5 @@
+# Netlify SPA fallback for Vite
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

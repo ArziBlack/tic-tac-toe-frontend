@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Patterns } from '../utils/Patterns';
 import Modal from '../components/Modal'
 import '../styles/cross.css';
-import { useAuth } from '../utils/ContextAPI';
+import { useAuth } from '../utils/ContextAPI.jsx';
 
 let roomId;
 let name = "";
